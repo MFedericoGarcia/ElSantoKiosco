@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ProductoDetailView: View {
     
     var producto: Producto
     @State private var isShowingSheet = false
+    @State private var listaDePrecios = [String]()
+    @State private var isExporting = false
     
     
     var body: some View {
@@ -56,11 +59,41 @@ struct ProductoDetailView: View {
                     }
                 }
             }
+            .toolbar {
+                Button("Export .txt") {
+                    listToStrings()
+                    isExporting.toggle()
+                }
+                .fileExporter(
+                    isPresented: $isExporting,
+                    document: TextFile(initialLines: listaDePrecios),
+                    contentType: .plainText,
+                    defaultFilename: producto.nombre
+                ) { result in
+                    switch result {
+                    case .success(let url):
+                        print("Archivo exportado en: \(url)")
+                    case .failure(let error):
+                        print("Error al exportar: \(error.localizedDescription)")
+                    }
+                }
+            }
         }
         .sheet(isPresented: $isShowingSheet) {
             EditPrecioView(producto: producto)
         }
     }
+    
+    func listToStrings() {
+        listaDePrecios.append("Precios Historicos de: \(producto.nombre)")
+        listaDePrecios.append(" ")
+        listaDePrecios.append("Precios  ------- Fechas")
+        for precio in producto.preciosHistoricos {
+            let stringed = "\(precio.precio) ------- \(precio.fechaString)"
+            listaDePrecios.append(stringed)
+        }
+    }
+    
 }
 
 #Preview {
