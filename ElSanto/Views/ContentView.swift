@@ -41,7 +41,9 @@ struct ContentView: View {
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "Buscar por nombre")
             .sheet(isPresented: $isShowingSheet) {
-                NuevoProductoView()
+                NuevoProductoView(){
+                    viewModel.fetchProductos()
+                }
             }
         }
     }

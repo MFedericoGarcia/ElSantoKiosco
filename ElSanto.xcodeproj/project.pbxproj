@@ -16,11 +16,6 @@
 			path = ElSanto;
 			sourceTree = "<group>";
 		};
-		B721038F2F870507002F9737 /* ViewModels */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,7 +33,6 @@
 			isa = PBXGroup;
 			children = (
 				B72103232F85DC95002F9737 /* ElSanto */,
-				B721038F2F870507002F9737 /* ViewModels */,
 				B72103222F85DC95002F9737 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -68,7 +62,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				B72103232F85DC95002F9737 /* ElSanto */,
-				B721038F2F870507002F9737 /* ViewModels */,
 			);
 			name = ElSanto;
 			packageProductDependencies = (

@@ -53,6 +53,14 @@ class Producto {
     func nuevoPrecio( nuevoPrecio: Double, fecha: Date) {
         precioCosto = nuevoPrecio
         preciosHistoricos.append(PreciosHistoricos(fecha: fecha, precio: nuevoPrecio))
+        save()
+    }
+    
+    // Guarda los cambios del producto en su ModelContext
+    func save() {
+        if let context = self.modelContext {
+            try? context.save()
+        }
     }
     
     static var ejemplo = Producto(nombre: "Caramelo", precioCosto: 80.0, precioVenta: 150.0, tipoProducto: .varios)

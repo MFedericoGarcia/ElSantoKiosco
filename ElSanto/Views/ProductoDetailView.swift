@@ -50,7 +50,9 @@ struct ProductoDetailView: View {
                 }
                 
                 Section("Precios anteriores") {
-                    ForEach(producto.preciosHistoricos) { historico in
+                    ForEach(producto.preciosHistoricos.sorted(by: { lh, rh in
+                        lh < rh
+                    })) { historico in
                         HStack {
                             Text(String(historico.precio))
                             Spacer()
