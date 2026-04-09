@@ -9,7 +9,7 @@ import SwiftData
 import Foundation
 
 @Model
-class PreciosHistoricos {
+class PreciosHistoricos: Comparable {
     var fecha: Date
     var precio: Double
     
@@ -18,8 +18,16 @@ class PreciosHistoricos {
         self.precio = precio
     }
     
+    static func < (lhs: PreciosHistoricos, rhs: PreciosHistoricos) -> Bool {
+        lhs.fecha < rhs.fecha
+    }
+
+    static func == (lhs: PreciosHistoricos, rhs: PreciosHistoricos) -> Bool {
+        lhs.fecha == rhs.fecha && lhs.precio == rhs.precio
+    }
+    
     var fechaString: String {
-        String(fecha.formatted(date: .abbreviated, time: .omitted)
-)    }
+        String(fecha.formatted(date: .abbreviated, time: .omitted))
+    }
     
 }
