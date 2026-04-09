@@ -10,49 +10,31 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) var modelContext
-    @Query() var productos: [Producto]
+    @State private var viewModel = ViewModel()
     
     @State private var isShowingSheet = false
     @State private var searchText = ""
     
-    var filteredProducts: [Producto] {
-        if searchText.isEmpty {
-            productos
-        } else {
-            productos.filter { producto in
-                producto.nombre.localizedStandardContains(searchText)
-            }
-        }
-    }
-    
     var body: some View {
         NavigationStack {
             List {
-                ForEach(filteredProducts, id: \.id) { producto in
+                ForEach(viewModel.filtrarProductos(searchText: searchText), id: \.id) { producto in
                     NavigationLink{
                         ProductoDetailView(producto: producto)
-                        
                     } label: {
-                        HStack {
-                            Image(systemName: producto.sfImage)
-                                .font(.caption)
-                            
-                            Text(producto.nombre)
-                                .font(.headline)
-                            
-                            Spacer()
-                            
-                            Text(String(producto.precioCosto.formatted(.currency(code: "ARS"))))
-                        }
+                        CustomViewListLabel(producto: producto)
                     }
                 }
+            }
+            .onAppear {
+                viewModel.modelContext = modelContext
+                viewModel.fetchProductos()
             }
             .toolbar {
                 Button{
                     isShowingSheet = true
                 } label: {
-                    Image(systemName: "plus")
-                    Text("Nuevo")
+                    AddButton()
                 }
             }
             .navigationTitle("El Santo")
