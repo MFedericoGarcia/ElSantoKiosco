@@ -20,7 +20,7 @@ struct CustomViewListLabel: View {
             
             Spacer()
             
-            Text(String(producto.precioCosto.formatted(.currency(code: "ARS"))))
+            Text(String(producto.precioCosto.formatted(.currency(code: "ARS").grouping(.automatic))))
         }
     }
 }

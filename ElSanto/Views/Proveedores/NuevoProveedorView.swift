@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct NuevoProveedor: View {
+struct NuevoProveedorView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     
@@ -50,7 +50,7 @@ struct NuevoProveedor: View {
 }
 
 #Preview {
-    NuevoProveedor() {
+    NuevoProveedorView() {
         
     }
 }

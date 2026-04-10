@@ -8,7 +8,7 @@
 import SwiftData
 import SwiftUI
 
-extension NuevoProveedor {
+extension NuevoProveedorView {
     @Observable
     class ViewModel {
         var modelContext: ModelContext? = nil

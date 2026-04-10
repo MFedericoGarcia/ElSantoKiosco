@@ -20,7 +20,7 @@ extension EditPrecioView {
             self.producto = producto
         }
         
-        func saveNewPrice(producto: Producto) {
+        func saveNewPrice() {
             producto.nuevoPrecio(nuevoPrecio: nuevoPrecio, fecha: fecha)
         }
         

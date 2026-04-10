@@ -21,7 +21,7 @@ struct ProveedoresView: View {
             List {
                 ForEach(viewModel.filtrarProductos(searchText: searchText), id: \.id) { proveedor in
                     NavigationLink {
-                        ProveedorDitail(proveedor: proveedor)
+                        ProveedorDitailView(proveedor: proveedor)
                     }
                     label: {
                         VStack{
@@ -55,7 +55,7 @@ struct ProveedoresView: View {
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "Buscar por nombre")
             .sheet(isPresented: $showSheet) {
-                NuevoProveedor(){
+                NuevoProveedorView(){
                     viewModel.fetchProveedor()
                 }
             }

@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-struct ProveedorDitail: View {
+struct ProveedorDitailView: View {
     var proveedor: Proveedor
     @State private var showSheet = false
+    @State private var showAlert = false
     
     var body: some View {
         List {
@@ -17,7 +18,7 @@ struct ProveedorDitail: View {
                 lh > rh
             })) { boleta in
                 HStack {
-                    Text(String(boleta.monto))
+                    Text(String((boleta.monto).formatted(.currency(code: "ARS").grouping(.automatic))))
                     Spacer()
                     Text(boleta.fechaString)
                 }
@@ -32,15 +33,33 @@ struct ProveedorDitail: View {
                     AddButton()
                 }
             }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showAlert.toggle()
+                } label: {
+                    Text("Total")
+                    Image(systemName: "list.bullet.rectangle.portrait")
+                }
+            }
         }
         .sheet(isPresented: $showSheet, content: {
-            NuevaBoleta(proveedor: proveedor)
+            NuevaBoletaView(proveedor: proveedor)
         })
         .navigationTitle(proveedor.name)
         .navigationBarTitleDisplayMode(.inline)
+        
+        //MARK: -- Transformar esto en una nueva vista con Posibilidad de elegir mes de total
+        
+        .alert("Total de Facturas de \(proveedor.name)", isPresented: $showAlert) {
+            
+        } message: {
+            Text("El total es :\n \(proveedor.montosTotal(en: .now))")
+        }
+
     }
 }
 
 #Preview {
-    ProveedorDitail(proveedor: .ejemplo)
+    ProveedorDitailView(proveedor: .ejemplo)
 }
