@@ -11,18 +11,29 @@ import SwiftData
 @Model
 class Proveedor {
     
-    var id: String
-    var name: String
-    var boletaFacturacion: String
-//    var montos = [Facturas] ()
-    var productos = [Producto]()
+    enum Boleta: String, Codable, CaseIterable {
+        case blanco = "Blanco"
+        case negro = "Negro"
+    }
     
-    init(id: String, name: String, boletaFacturacion: String, /*montos: [Facturas] = [Facturas] (),*/ productos: [Producto] = [Producto]()) {
+    var id: UUID
+    var name: String
+    var boletaFacturacion: Boleta
+    var montos = [Facturas] ()
+    var productos = [Producto]()
+    var numeroContacto: String
+    
+    init(id: UUID = UUID(), name: String, boletaFacturacion: Boleta, montos: [Facturas] = [Facturas](), productos: [Producto] = [Producto](), numeroContacto: String = "") {
         self.id = id
         self.name = name
         self.boletaFacturacion = boletaFacturacion
-//        self.montos = montos
+        self.montos = montos
         self.productos = productos
+        self.numeroContacto = numeroContacto
     }
+    
+#if DEBUG
+    static var ejemplo = Proveedor(name: "Osle", boletaFacturacion: .blanco, montos: [Facturas(monto: 200090.00, fecha: .now), Facturas(monto: 50000.00, fecha: .now)] )
+#endif
     
 }
