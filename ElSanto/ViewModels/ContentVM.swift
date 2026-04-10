@@ -22,6 +22,20 @@ extension ContentView {
             productos = (try? (modelContext?.fetch(fetchDescriptor) ?? [])) ?? []
         }
         
+        func deleteProducto(at offsets: IndexSet) {
+            for index in offsets {
+                let producto = productos[index]
+                if let modelContext = modelContext {
+                    modelContext.delete(producto)
+                }
+                do {
+                    try modelContext?.save()
+                } catch {
+                    print("Error at saving the model \(error.localizedDescription)")
+                }
+            }
+        }
+        
         func filtrarProductos( searchText: String) -> [Producto] {
             if searchText.isEmpty {
                 productos

@@ -25,6 +25,7 @@ struct ContentView: View {
                         CustomViewListLabel(producto: producto)
                     }
                 }
+                .onDelete(perform: viewModel.deleteProducto)
             }
             .onAppear {
                 viewModel.modelContext = modelContext

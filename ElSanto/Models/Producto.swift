@@ -63,5 +63,9 @@ class Producto {
         }
     }
     
+#if DEBUG
     static var ejemplo = Producto(nombre: "Caramelo", precioCosto: 80.0, precioVenta: 150.0, tipoProducto: .varios)
+#endif
+    
+   
 }
