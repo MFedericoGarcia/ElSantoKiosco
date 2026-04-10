@@ -12,7 +12,7 @@ import SwiftUI
 struct ElSantoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainTabView()
         }
         .modelContainer(for: Proveedor.self)
     }

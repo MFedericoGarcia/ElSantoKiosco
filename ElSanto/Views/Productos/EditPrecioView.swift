@@ -17,7 +17,7 @@ struct EditPrecioView: View {
     var body: some View {
         VStack {
             List {
-                TextField("Nuevo Precio", value: $viewModel.nuevoPrecio, format: .currency(code: "ARS"))
+                TextField("Nuevo Precio", value: $viewModel.nuevoPrecio, format: .currency(code: "ARS").grouping(.automatic))
                     .font(.title)
                 DatePicker("Fecha de Aumento", selection: $viewModel.fecha, displayedComponents: .date)
                       .datePickerStyle(.compact)
@@ -36,7 +36,7 @@ struct EditPrecioView: View {
         .presentationDetents([.medium])
         .alert("Nuevo Precio", isPresented: $showingAlert) {
             Button("Confirmar", role: .confirm) {
-                viewModel.saveNewPrice(producto: viewModel.producto)
+                viewModel.saveNewPrice()
                 showingAlert = false
                 dismiss()
             }
