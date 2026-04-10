@@ -20,6 +20,7 @@ extension NuevoProductoView {
         
         func agregarProducto() {
             modelContext?.insert(Producto(nombre: nombre, precioCosto: costo, precioVenta: venta, tipoProducto: tipo))
+            
         }
         
     }

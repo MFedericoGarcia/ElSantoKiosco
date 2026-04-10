@@ -9,10 +9,9 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct ProductoDetailView: View {
-    
-    var producto: Producto
+    @State private var viewModel: ViewModel
+        
     @State private var isShowingSheet = false
-    @State private var listaDePrecios = [String]()
     @State private var isExporting = false
     
     
@@ -20,21 +19,21 @@ struct ProductoDetailView: View {
         VStack{
             List {
                 HStack {
-                    Text(producto.nombre)
+                    Text(viewModel.producto.nombre)
                         .font(.title)
                     
                     Spacer()
                     
                     VStack {
-                        Text(String(describing: producto.tipoProducto))
-                        Image(systemName: producto.sfImage)
+                        Text(String(describing: viewModel.producto.tipoProducto))
+                        Image(systemName: viewModel.producto.sfImage)
                             .font(.title)
                     }
                 }
                 
                 Section("Precio Actual") {
                     HStack {
-                        Text(" \(producto.precioCosto.formatted(.currency(code: "ARS")))")
+                        Text(" \(viewModel.producto.precioCosto.formatted(.currency(code: "ARS")))")
                             .font(.title3)
                         Spacer()
                         Button {
@@ -50,7 +49,7 @@ struct ProductoDetailView: View {
                 }
                 
                 Section("Precios anteriores") {
-                    ForEach(producto.preciosHistoricos.sorted(by: { lh, rh in
+                    ForEach(viewModel.producto.preciosHistoricos.sorted(by: { lh, rh in
                         lh < rh
                     })) { historico in
                         HStack {
@@ -63,14 +62,14 @@ struct ProductoDetailView: View {
             }
             .toolbar {
                 Button("Export .txt") {
-                    listToStrings()
+                    viewModel.listToStrings()
                     isExporting.toggle()
                 }
                 .fileExporter(
                     isPresented: $isExporting,
-                    document: TextFile(initialLines: listaDePrecios),
+                    document: TextFile(initialLines: viewModel.listaDePrecios),
                     contentType: .plainText,
-                    defaultFilename: producto.nombre
+                    defaultFilename: viewModel.producto.nombre
                 ) { result in
                     switch result {
                     case .success(let url):
@@ -82,19 +81,14 @@ struct ProductoDetailView: View {
             }
         }
         .sheet(isPresented: $isShowingSheet) {
-            EditPrecioView(producto: producto)
+            EditPrecioView(producto: viewModel.producto)
         }
     }
     
-    func listToStrings() {
-        listaDePrecios.append("Precios Historicos de: \(producto.nombre)")
-        listaDePrecios.append(" ")
-        listaDePrecios.append("Precios  ------- Fechas")
-        for precio in producto.preciosHistoricos {
-            let stringed = "\(precio.precio) ------- \(precio.fechaString)"
-            listaDePrecios.append(stringed)
-        }
+    init(producto: Producto) {
+        self.viewModel = ViewModel(producto: producto)
     }
+    
     
 }
 
