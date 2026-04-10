@@ -10,19 +10,23 @@ import SwiftData
 
 struct ProveedoresView: View {
     @Environment(\.modelContext) var modelContext
-    @Query() var proveedores: [Proveedor]
+    @State private var viewModel = ViewModel()
+    
+    @State private var showSheet = false
+    @State private var searchText = ""
+
     
     var body: some View {
         NavigationStack {
-            ScrollView  {
-                ForEach(proveedores, id: \.id) { proveedor in
+            List {
+                ForEach(viewModel.filtrarProductos(searchText: searchText), id: \.id) { proveedor in
                     NavigationLink {
                         ProveedorDitail(proveedor: proveedor)
                     }
                     label: {
                         VStack{
                             Text(proveedor.name)
-                                .font(.title)
+                                .font(.title3)
                             HStack {
                                 Text(proveedor.numeroContacto)
                                     .font(.subheadline)
@@ -33,16 +37,26 @@ struct ProveedoresView: View {
                             }
                         }
                     }
-                    RoundedRectangle(cornerRadius: 10)
-                        .frame(width: 400, height: 5)
-                        .foregroundStyle(.secondary)
                 }
+                .onDelete(perform: viewModel.deleteProveedor)
+            }
+            .onAppear {
+                viewModel.modelContext = modelContext
+                viewModel.fetchProveedor()
             }
             .toolbar {
                 Button {
-                    modelContext.insert(Proveedor(name: "Coca-Cola", boletaFacturacion: .blanco,montos: [Facturas(monto: 200090.00, fecha: .now), Facturas(monto: 50000.00, fecha: .now)], numeroContacto: "11-2222-3333", ))
+                    showSheet = true
                 } label: {
                     AddButton()
+                }
+            }
+            .navigationTitle("Proveedores")
+            .navigationBarTitleDisplayMode(.inline)
+            .searchable(text: $searchText, prompt: "Buscar por nombre")
+            .sheet(isPresented: $showSheet) {
+                NuevoProveedor(){
+                    viewModel.fetchProveedor()
                 }
             }
         }

@@ -38,7 +38,7 @@ struct ContentView: View {
                     AddButton()
                 }
             }
-            .navigationTitle("El Santo")
+            .navigationTitle("Productos")
             .navigationBarTitleDisplayMode(.inline)
             .searchable(text: $searchText, prompt: "Buscar por nombre")
             .sheet(isPresented: $isShowingSheet) {
