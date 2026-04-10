@@ -11,7 +11,7 @@ import SwiftData
 struct MainTabView: View {
     var body: some View {
         TabView {
-            ContentView()
+            ProductosListView()
                 .tabItem {
                     Label("Productos", systemImage: "chart.bar.horizontal.page")
                 }
