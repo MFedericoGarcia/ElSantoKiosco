@@ -9,7 +9,7 @@ import SwiftData
 import SwiftUI
 
 
-extension ContentView {
+extension ProductosListView {
     
     @Observable
     class ViewModel {

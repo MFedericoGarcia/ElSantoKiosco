@@ -1,14 +1,14 @@
 //
-//  ContentView.swift
+//  ProductosListView.swift
 //  ElSanto
 //
-//  Created by Fede Garcia on 07/04/2026.
+//  Created by Fede Garcia on 10/04/2026.
 //
 
 import SwiftData
 import SwiftUI
 
-struct ContentView: View {
+struct ProductosListView: View {
     @Environment(\.modelContext) var modelContext
     @State private var viewModel = ViewModel()
     
@@ -48,8 +48,9 @@ struct ContentView: View {
             }
         }
     }
+
 }
 
 #Preview {
-    ContentView()
+    ProductosListView()
 }
