@@ -12,8 +12,13 @@ extension EditPrecioView {
     
     @Observable
     class ViewModel {
+        var producto: Producto
         var nuevoPrecio = 0.0
         var fecha = Date.now
+        
+        init(producto: Producto) {
+            self.producto = producto
+        }
         
         func saveNewPrice(producto: Producto) {
             producto.nuevoPrecio(nuevoPrecio: nuevoPrecio, fecha: fecha)

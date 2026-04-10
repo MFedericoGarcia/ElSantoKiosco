@@ -10,9 +10,8 @@ import SwiftUI
 struct EditPrecioView: View {
     @Environment(\.dismiss) var dismiss
     
-    @State private var viewModel = ViewModel()
+    @State private var viewModel: ViewModel
     @State private var showingAlert = false
-    var producto: Producto
    
     
     var body: some View {
@@ -37,7 +36,7 @@ struct EditPrecioView: View {
         .presentationDetents([.medium])
         .alert("Nuevo Precio", isPresented: $showingAlert) {
             Button("Confirmar", role: .confirm) {
-                viewModel.saveNewPrice(producto: producto)
+                viewModel.saveNewPrice(producto: viewModel.producto)
                 showingAlert = false
                 dismiss()
             }
@@ -48,8 +47,12 @@ struct EditPrecioView: View {
             }
             
         } message: {
-            Text("Está seguro de actualizar / modificar el precio de \(producto.nombre) ?")
+            Text("Está seguro de actualizar / modificar el precio de \(viewModel.producto.nombre) ?")
         }
+    }
+    
+    init(producto: Producto) {
+        self.viewModel = ViewModel(producto: producto)
     }
     
     
