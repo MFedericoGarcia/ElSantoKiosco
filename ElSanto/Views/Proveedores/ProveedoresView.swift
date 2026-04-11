@@ -18,49 +18,50 @@ struct ProveedoresView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(viewModel.filtrarProductos(searchText: searchText), id: \.id) { proveedor in
-                    NavigationLink {
-                        ProveedorDitailView(proveedor: proveedor)
-                    }
-                    label: {
-                        VStack{
-                            Text(proveedor.name)
-                                .font(.title3)
-                            HStack {
-                                Text(proveedor.numeroContacto)
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-                                Text("Boleta : \(proveedor.boletaFacturacion.rawValue)")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
+                List {
+                    ForEach(viewModel.filtrarProductos(searchText: searchText), id: \.id) { proveedor in
+                        NavigationLink {
+                            ProveedorDitailView(proveedor: proveedor)
+                        }
+                        label: {
+                            VStack{
+                                Text(proveedor.name)
+                                    .font(.title3)
+                                HStack {
+                                    Text(proveedor.numeroContacto)
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                    Text("Boleta : \(proveedor.boletaFacturacion.rawValue)")
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+                                }
                             }
                         }
                     }
+                    .onDelete(perform: viewModel.deleteProveedor)
                 }
-                .onDelete(perform: viewModel.deleteProveedor)
-            }
-            .onAppear {
-                viewModel.modelContext = modelContext
-                viewModel.fetchProveedor()
-            }
-            .toolbar {
-                Button {
-                    showSheet = true
-                } label: {
-                    AddButton()
-                }
-            }
-            .navigationTitle("Proveedores")
-            .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchText, prompt: "Buscar por nombre")
-            .sheet(isPresented: $showSheet) {
-                NuevoProveedorView(){
+                .onAppear {
+                    viewModel.modelContext = modelContext
                     viewModel.fetchProveedor()
                 }
-            }
+                .toolbar {
+                    Button {
+                        showSheet = true
+                    } label: {
+                        AddButton()
+                    }
+                }
+                .navigationTitle("Proveedores")
+                .navigationBarTitleDisplayMode(.inline)
+                .searchable(text: $searchText, prompt: "Buscar por nombre")
+                .sheet(isPresented: $showSheet) {
+                    NuevoProveedorView(){
+                        viewModel.fetchProveedor()
+                    }
+                }
+                
+            
         }
-        
     }
 }
 
