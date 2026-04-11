@@ -27,10 +27,14 @@ struct NuevoProductoView: View {
                 Section("Precio de costo"){
                     
                     TextField("Precio de Costo", value: $viewModel.costo, format: .currency(code: "ARS"))
+                        .keyboardType(.decimalPad)
+
                 }
                 
                 Section("Precio de Venta"){
                     TextField("Precio de Venta", value: $viewModel.venta, format: .currency(code: "ARS"))
+                        .keyboardType(.decimalPad)
+
                 }
             }
             .onAppear{

@@ -21,6 +21,8 @@ struct NuevaBoletaView: View {
             List {
                 HStack {
                     TextField("Monto de la boleta", value: $viewModel.monto, format: .currency(code: "ARS").grouping(.automatic) )
+                        .keyboardType(.decimalPad)
+
                     DatePicker(selection: $viewModel.fecha, displayedComponents: .date) {
                         Text("")
                     }

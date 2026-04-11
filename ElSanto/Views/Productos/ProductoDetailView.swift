@@ -34,6 +34,7 @@ struct ProductoDetailView: View {
                 Section("Precio Actual") {
                     HStack {
                         Text(" \(viewModel.producto.precioCosto.formatted(.currency(code: "ARS")))")
+                            .keyboardType(.decimalPad)
                             .font(.title3)
                         Spacer()
                         Button {

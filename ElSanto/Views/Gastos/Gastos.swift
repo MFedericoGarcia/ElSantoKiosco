@@ -48,6 +48,7 @@ struct Gastos: View {
                     }
                 }
             }
+            .navigationTitle("Gastos")
             .sheet(item: $selectedGasto) { gasto in
                 NuevoGastoEmpresaExistenteView(gasto: gasto)
             }

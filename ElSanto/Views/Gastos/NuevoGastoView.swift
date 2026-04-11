@@ -22,6 +22,8 @@ struct NuevoGastoView: View {
                 .font(.title2)
             HStack {
                 TextField("", value: $monto, format: .currency(code: "ARS").grouping(.automatic))
+                    .keyboardType(.decimalPad)
+
                 DatePicker("Fecha de Aumento", selection: $nuevaFecha, displayedComponents: .date)
                       .datePickerStyle(.compact)
                       .labelsHidden()

@@ -19,6 +19,7 @@ struct EditPrecioView: View {
             List {
                 TextField("Nuevo Precio", value: $viewModel.nuevoPrecio, format: .currency(code: "ARS").grouping(.automatic))
                     .font(.title)
+                    .keyboardType(.decimalPad)
                 DatePicker("Fecha de Aumento", selection: $viewModel.fecha, displayedComponents: .date)
                       .datePickerStyle(.compact)
                       .font(.title3)
@@ -35,7 +36,7 @@ struct EditPrecioView: View {
         }
         .presentationDetents([.medium])
         .alert("Nuevo Precio", isPresented: $showingAlert) {
-            Button("Confirmar", role: .confirm) {
+            Button("Confirmar") {
                 viewModel.saveNewPrice()
                 showingAlert = false
                 dismiss()
