@@ -5,6 +5,7 @@
 //  Created by Fede Garcia on 09/04/2026.
 //
 
+import CodeScanner
 import SwiftData
 import SwiftUI
 
@@ -15,6 +16,10 @@ extension ProductosListView {
     class ViewModel {
         var modelContext: ModelContext? = nil
         var productos: [Producto] = []
+        
+        var isShowingScan = false
+        // Callback que se ejecuta al completar un escaneo exitoso
+        var onScan: ((String) -> Void)?
         
         func fetchProductos() {
             let fetchDescriptor = FetchDescriptor<Producto>(sortBy: [SortDescriptor(\.nombre)])
@@ -45,6 +50,19 @@ extension ProductosListView {
                 }
             }
         }
+        
+        func handleScann( result: Result<ScanResult, ScanError>){
+            switch result {
+            case .success(let result):
+                let details = result.string
+                print(details)
+                isShowingScan = false
+            case .failure(let error):
+                print("Scanning failed: \(error.localizedDescription)")
+            }
+            
+        }
+        
     }
     
 }

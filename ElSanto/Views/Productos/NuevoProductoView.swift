@@ -5,8 +5,10 @@
 //  Created by Fede Garcia on 07/04/2026.
 //
 
+import CodeScanner
 import SwiftUI
 import SwiftData
+internal import AVFoundation
 
 struct NuevoProductoView: View {
     @Environment(\.modelContext) var modelContext
@@ -21,6 +23,14 @@ struct NuevoProductoView: View {
         VStack {
             List {
                 TextField("Nombre del Producto", text: $viewModel.nombre)
+                HStack {
+                    Text("Código de barras : \(viewModel.codigoDeBarras)")
+                    Button {
+                        viewModel.isShowingScan = true
+                    } label: {
+                        Image(systemName: "barcode")
+                    }
+                }
                 Picker("Tipo del Producto", selection: $viewModel.tipo) {
                     ForEach(Producto.TipoProducto.allCases, id: \.self){ tipo in
                         Text(String(tipo.rawValue))
@@ -64,6 +74,12 @@ struct NuevoProductoView: View {
                     }
                 }
             }
+            .sheet(isPresented: $viewModel.isShowingScan) {
+                    CodeScannerView(
+                                    codeTypes: [.gs1DataBar, .code39, .codabar, .code128, .code39Mod43, .code93, .ean13, .ean8, .gs1DataBarExpanded, .gs1DataBarLimited],
+                                    scanMode: .once,
+                                    completion: viewModel.handleScann)
+            }
             
             .onAppear{
                 viewModel.modelContext = modelContext
@@ -75,8 +91,12 @@ struct NuevoProductoView: View {
                 refresh()
                 dismiss()
             }
+            .buttonStyle(.bordered)
+            .padding(.bottom)
             
         }
+        .scrollDismissesKeyboard(.immediately)
+
         
     }
 }

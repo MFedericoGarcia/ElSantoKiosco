@@ -11,7 +11,6 @@ struct AddButton: View {
     var body: some View {
         HStack {
             Image(systemName: "plus")
-            Text("Nuevo")
         }
     }
 }
