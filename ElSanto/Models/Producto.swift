@@ -22,6 +22,7 @@ class Producto {
     var precioCosto: Double
     var precioVenta: Double
     var tipoProducto: TipoProducto
+    var porcentajeGanancia: Double
 
     // Relationship to Proveedor (optional)
     var proveedores: Proveedor?
@@ -36,8 +37,23 @@ class Producto {
         self.precioVenta = precioVenta
         self.tipoProducto = tipoProducto
         self.proveedores = proveedores
+        self.porcentajeGanancia = ((precioVenta - precioCosto) / precioCosto) * 100
+        
         self.preciosHistoricos.append(PreciosHistoricos(fecha: .now, precio: precioCosto))
     }
+    
+    init(id: UUID = UUID(), nombre: String, precioCosto: Double, tipoProducto: TipoProducto, porcentajeGanancia: Double, proveedores: Proveedor? = nil) {
+        self.id = id
+        self.nombre = nombre
+        self.precioCosto = precioCosto
+        self.precioVenta = precioCosto * (1 + porcentajeGanancia)
+        self.tipoProducto = tipoProducto
+        self.proveedores = proveedores
+        self.porcentajeGanancia = porcentajeGanancia
+        
+        self.preciosHistoricos.append(PreciosHistoricos(fecha: .now, precio: precioCosto))
+    }
+    
     
     var sfImage: String {
         switch tipoProducto {
@@ -53,7 +69,13 @@ class Producto {
     func nuevoPrecio( nuevoPrecio: Double, fecha: Date) {
         precioCosto = nuevoPrecio
         preciosHistoricos.append(PreciosHistoricos(fecha: fecha, precio: nuevoPrecio))
+        precioVenta = precioCosto * ( 1 + porcentajeGanancia)
         save()
+    }
+    
+    func nuevoPorcentaje( porcentaje: Double) {
+        porcentajeGanancia = porcentaje
+        precioVenta = precioCosto * (1 + porcentaje)
     }
     
     // Guarda los cambios del producto en su ModelContext

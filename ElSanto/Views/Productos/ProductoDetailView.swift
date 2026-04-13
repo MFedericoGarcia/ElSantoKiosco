@@ -10,9 +10,13 @@ import UniformTypeIdentifiers
 
 struct ProductoDetailView: View {
     @State private var viewModel: ViewModel
+    @Environment(\.dismiss) var dismiss
+
         
     @State private var isShowingSheet = false
     @State private var isExporting = false
+    @State private var isShowingPercent = false
+    @State private var nuevoPorcentaje = 0.0
     
     
     var body: some View {
@@ -46,7 +50,25 @@ struct ProductoDetailView: View {
                             }
                         }
                     }
-                    
+                }
+                
+                Section("Precio de venta") {
+                    HStack {
+                        Text("\(viewModel.producto.precioVenta.formatted(.currency(code: "ARS")))")
+                        Spacer()
+                        
+                        Button {
+                            isShowingPercent = true
+                        } label: {
+                            HStack {
+                                Text("Porcentaje")
+                                Text("\(viewModel.producto.porcentajeGanancia.formatted(.percent))")
+                            }
+                            
+                        }
+                        
+                        
+                    }
                 }
                 
                 Section("Precios anteriores") {
@@ -84,6 +106,11 @@ struct ProductoDetailView: View {
         .sheet(isPresented: $isShowingSheet) {
             EditPrecioView(producto: viewModel.producto)
         }
+        .sheet(isPresented: $isShowingPercent) {
+            PorcentajeSheetView(nuevoPorcentaje: $nuevoPorcentaje) {
+                viewModel.producto.nuevoPorcentaje(porcentaje: nuevoPorcentaje)
+            }
+        }
     }
     
     init(producto: Producto) {
@@ -96,3 +123,5 @@ struct ProductoDetailView: View {
 #Preview {
     ProductoDetailView(producto: Producto.ejemplo)
 }
+
+

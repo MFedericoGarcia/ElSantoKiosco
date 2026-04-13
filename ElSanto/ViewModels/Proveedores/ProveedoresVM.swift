@@ -14,11 +14,13 @@ extension ProveedoresView {
     class ViewModel {
         var modelContext: ModelContext? = nil
         var proveedores: [Proveedor] = []
+        var isEmpty = false
         
         func fetchProveedor() {
             let fetchDescriptor = FetchDescriptor<Proveedor>(sortBy: [SortDescriptor(\.name)])
             
             proveedores = (try? (modelContext?.fetch(fetchDescriptor) ?? [])) ?? []
+            proveedores.isEmpty ? (isEmpty = true) : (isEmpty = false)
         }
         
         func deleteProveedor(at offsets: IndexSet) {
@@ -26,6 +28,19 @@ extension ProveedoresView {
                 let proveedor = proveedores[index]
                 if let modelContext = modelContext {
                     modelContext.delete(proveedor)
+                }
+                do {
+                    try modelContext?.save()
+                } catch {
+                    print("Error at saving the model \(error.localizedDescription)")
+                }
+            }
+        }
+        
+        func deleteProveedorByID( id: UUID) {
+            for proveedor in proveedores {
+                if proveedor.id == id {
+                    modelContext?.delete(proveedor)
                 }
                 do {
                     try modelContext?.save()

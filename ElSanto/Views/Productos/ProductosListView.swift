@@ -17,20 +17,27 @@ struct ProductosListView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(viewModel.filtrarProductos(searchText: searchText), id: \.id) { producto in
-                    NavigationLink{
-                        ProductoDetailView(producto: producto)
-                    } label: {
-                        CustomViewListLabel(producto: producto)
+            VStack {
+                if !viewModel.productos.isEmpty {
+                    List {
+                        ForEach(viewModel.filtrarProductos(searchText: searchText), id: \.id) { producto in
+                            NavigationLink{
+                                ProductoDetailView(producto: producto)
+                            } label: {
+                                CustomViewListLabel(producto: producto)
+                            }
+                        }
+                        .onDelete(perform: viewModel.deleteProducto)
                     }
+                    
+                    .searchable(text: $searchText, prompt: "Buscar por nombre")
+                    
+                } else {
+                    ContentUnavailableView("No hay Productos cargados", systemImage: "basket")
                 }
-                .onDelete(perform: viewModel.deleteProducto)
             }
-            .onAppear {
-                viewModel.modelContext = modelContext
-                viewModel.fetchProductos()
-            }
+            .navigationTitle("Productos")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 Button{
                     isShowingSheet = true
@@ -38,17 +45,18 @@ struct ProductosListView: View {
                     AddButton()
                 }
             }
-            .navigationTitle("Productos")
-            .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $searchText, prompt: "Buscar por nombre")
             .sheet(isPresented: $isShowingSheet) {
                 NuevoProductoView(){
                     viewModel.fetchProductos()
                 }
             }
         }
+        .onAppear {
+            viewModel.modelContext = modelContext
+            viewModel.fetchProductos()
+        }
     }
-
+    
 }
 
 #Preview {
