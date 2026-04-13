@@ -14,57 +14,63 @@ struct ProveedoresView: View {
     
     @State private var showSheet = false
     @State private var searchText = ""
-
+    
     
     var body: some View {
         NavigationStack {
-                List {
-                    ForEach(viewModel.filtrarProductos(searchText: searchText), id: \.id) { proveedor in
-                        NavigationLink {
-                            ProveedorDitailView(proveedor: proveedor)
-                        }
-                        label: {
-                            VStack{
-                                Text(proveedor.name)
-                                    .font(.title3)
-                                HStack {
-                                    Text(proveedor.numeroContacto)
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
-                                    Text("Boleta : \(proveedor.boletaFacturacion.rawValue)")
-                                        .font(.subheadline)
-                                        .foregroundStyle(.secondary)
+            VStack{
+                if !viewModel.proveedores.isEmpty{
+                    List {
+                        let filtrados = viewModel.filtrarProductos(searchText: searchText)
+                        ForEach(filtrados, id: \.id) { proveedor in
+                            NavigationLink {
+                                ProveedorDitailView(proveedor: proveedor)
+                            } label: {
+                                VStack {
+                                    Text(proveedor.name)
+                                        .font(.title3)
+                                    HStack {
+                                        Text(proveedor.numeroContacto)
+                                            .font(.subheadline)
+                                            .foregroundStyle(.secondary)
+                                        Text("Boleta : \(proveedor.boletaFacturacion.rawValue)")
+                                            .font(.subheadline)
+                                            .foregroundStyle(.secondary)
+                                    }
                                 }
                             }
                         }
+                        .onDelete(perform: viewModel.deleteProveedor)
                     }
-                    .onDelete(perform: viewModel.deleteProveedor)
+                    .searchable(text: $searchText, prompt: "Buscar por nombre")
+                    
+                } else {
+                    ContentUnavailableView("No hay Proveedores cargados", systemImage: "truck.box.badge.clock")
                 }
-                .onAppear {
-                    viewModel.modelContext = modelContext
+            }
+            .navigationTitle("Proveedores")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                Button {
+                    showSheet = true
+                } label: {
+                    AddButton()
+                }
+            }
+            .sheet(isPresented: $showSheet) {
+                NuevoProveedorView(){
                     viewModel.fetchProveedor()
                 }
-                .toolbar {
-                    Button {
-                        showSheet = true
-                    } label: {
-                        AddButton()
-                    }
-                }
-                .navigationTitle("Proveedores")
-                .navigationBarTitleDisplayMode(.inline)
-                .searchable(text: $searchText, prompt: "Buscar por nombre")
-                .sheet(isPresented: $showSheet) {
-                    NuevoProveedorView(){
-                        viewModel.fetchProveedor()
-                    }
-                }
-                
+            }
             
+        }
+        .onAppear {
+            print("Reload")
+            viewModel.modelContext = modelContext
+            viewModel.fetchProveedor()
         }
     }
 }
-
 #Preview {
     ProveedoresView()
 }

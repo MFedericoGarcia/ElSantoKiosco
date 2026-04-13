@@ -56,7 +56,7 @@ struct ProveedorDitailView: View {
         } message: {
             Text("El total es :\n \(proveedor.montosTotal(en: .now))")
         }
-
+        
     }
 }
 
