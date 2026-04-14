@@ -28,14 +28,19 @@ struct NuevoGastoView: View {
                       .datePickerStyle(.compact)
                       .labelsHidden()
             }
-            HStack(){
-                Spacer()
-                Button("Agregar Nuevo Gasto") {
-                    modelContext.insert(Gasto(nombre: nombre, monto: monto, fecha: nuevaFecha))
-                    dismiss()
-                }
-                Spacer()
+        }
+        HStack(){
+            Spacer()
+            Button("Agregar Nuevo Gasto") {
+                modelContext.insert(Gasto(nombre: nombre, monto: monto, fecha: nuevaFecha))
+                dismiss()
             }
+            .padding()
+            .font(.title3)
+                .tint(.teal.opacity(0.5))
+                .buttonStyle(.borderedProminent)
+                .foregroundStyle(.white)
+            Spacer()
         }
         .presentationDetents([.height(250)])
     }

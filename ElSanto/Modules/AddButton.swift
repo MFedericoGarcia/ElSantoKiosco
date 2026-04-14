@@ -13,6 +13,7 @@ struct AddButton: View {
             Image(systemName: "plus")
             Text("Nuevo")
         }
+        .foregroundStyle(.white)
     }
 }
 

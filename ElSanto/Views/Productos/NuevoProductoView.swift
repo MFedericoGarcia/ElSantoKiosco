@@ -75,6 +75,11 @@ struct NuevoProductoView: View {
                 refresh()
                 dismiss()
             }
+            .padding()
+            .font(.title3)
+            .tint(.indigo.opacity(0.5))
+            .buttonStyle(.borderedProminent)
+            .foregroundStyle(.white)
             
         }
         

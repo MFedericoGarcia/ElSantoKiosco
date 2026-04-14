@@ -14,13 +14,14 @@ extension NuevaBoletaView {
         
         var monto: Double = 0.0
         var fecha: Date = .now
+        var facturacion: Facturas.BlancoONegro = .blanco
         
         init(proveedor: Proveedor) {
             self.proveedor = proveedor
         }
         
         func saveNewFacturaProveedor() {
-            proveedor.nuevaFactura(monto: monto, fecha: fecha)
+            proveedor.nuevaFactura(monto: monto, fecha: fecha, facturacion: facturacion )
         }
     }
 }

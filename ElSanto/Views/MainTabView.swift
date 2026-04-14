@@ -15,17 +15,29 @@ struct MainTabView: View {
                 .tabItem {
                     Label("Productos", systemImage: "chart.bar.horizontal.page")
                 }
+                .tint(.indigo.opacity(0.5))
             
             ProveedoresView()
                 .tabItem {
                     Label("Proveedores", systemImage: "truck.box")
                 }
+                .tint(.brown.opacity(0.5))
             
             Gastos()
                 .tabItem {
                     Label("Gastos", systemImage: "dollarsign.gauge.chart.leftthird.topthird.rightthird")
                 }
+                .tint(.teal.opacity(0.5))
+            
+            CierresZView()
+                .tabItem {
+                    Label("Contable", systemImage: "text.rectangle.page")
+                }
+                .tint(.red.opacity(0.5))
+        
         }
+        .foregroundStyle(.white)
+        .preferredColorScheme(.dark)
     }
 }
 

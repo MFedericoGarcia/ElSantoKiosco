@@ -43,9 +43,14 @@ struct NuevoProveedorView: View {
                 dismiss()
                 
             }
+            .padding()
+            .font(.title3)
+            .tint(.brown.opacity(0.5))
+            .buttonStyle(.borderedProminent)
+            .foregroundStyle(.white)
         }
         
-        .presentationDetents([.height(300)])
+        .presentationDetents([.height(350)])
     }
 }
 

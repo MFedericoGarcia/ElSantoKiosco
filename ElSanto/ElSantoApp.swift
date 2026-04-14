@@ -14,6 +14,6 @@ struct ElSantoApp: App {
         WindowGroup {
             MainTabView()
         }
-        .modelContainer(for: [Proveedor.self, Gasto.self])
+        .modelContainer(for: [Proveedor.self, Gasto.self, CierresZ.self])
     }
 }

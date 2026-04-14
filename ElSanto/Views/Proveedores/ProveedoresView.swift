@@ -18,51 +18,61 @@ struct ProveedoresView: View {
     
     var body: some View {
         NavigationStack {
-            VStack{
-                if !viewModel.proveedores.isEmpty{
-                    List {
-                        let filtrados = viewModel.filtrarProductos(searchText: searchText)
-                        ForEach(filtrados, id: \.id) { proveedor in
-                            NavigationLink {
-                                ProveedorDitailView(proveedor: proveedor)
-                            } label: {
-                                VStack {
-                                    Text(proveedor.name)
-                                        .font(.title3)
-                                    HStack {
-                                        Text(proveedor.numeroContacto)
-                                            .font(.subheadline)
-                                            .foregroundStyle(.secondary)
-                                        Text("Boleta : \(proveedor.boletaFacturacion.rawValue)")
-                                            .font(.subheadline)
-                                            .foregroundStyle(.secondary)
+            ZStack{
+                Color.brown.opacity(0.2)
+                    .ignoresSafeArea()
+                VStack{
+                    if !viewModel.proveedores.isEmpty{
+                        List {
+                            let filtrados = viewModel.filtrarProductos(searchText: searchText)
+                            ForEach(filtrados, id: \.id) { proveedor in
+                                NavigationLink {
+                                    ProveedorDitailView(proveedor: proveedor)
+                                } label: {
+                                    VStack {
+                                        Text(proveedor.name)
+                                            .font(.title3)
+                                        HStack {
+                                            Text(proveedor.numeroContacto)
+                                                .font(.subheadline)
+                                                .foregroundStyle(.secondary)
+                                            Text("Boleta : \(proveedor.boletaFacturacion.rawValue)")
+                                                .font(.subheadline)
+                                                .foregroundStyle(.secondary)
+                                        }
                                     }
                                 }
                             }
+                            .onDelete(perform: viewModel.deleteProveedor)
                         }
-                        .onDelete(perform: viewModel.deleteProveedor)
+                        .padding(.horizontal, 10)
+                        .listStyle(.automatic)
+                        .listRowBackground(Color.clear)
+                        .scrollContentBackground(.hidden)
+                        .searchable(text: $searchText, prompt: "Buscar por nombre")
+                        
+                    } else {
+                        ContentUnavailableView("No hay Proveedores cargados", systemImage: "truck.box.badge.clock")
                     }
-                    .searchable(text: $searchText, prompt: "Buscar por nombre")
-                    
-                } else {
-                    ContentUnavailableView("No hay Proveedores cargados", systemImage: "truck.box.badge.clock")
                 }
-            }
-            .navigationTitle("Proveedores")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                Button {
-                    showSheet = true
-                } label: {
-                    AddButton()
+                .navigationTitle("Proveedores")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    Button {
+                        showSheet = true
+                    } label: {
+                        AddButton()
+                    }
+                    .buttonStyle(.borderedProminent)
+
                 }
-            }
-            .sheet(isPresented: $showSheet) {
-                NuevoProveedorView(){
-                    viewModel.fetchProveedor()
+                .sheet(isPresented: $showSheet) {
+                    NuevoProveedorView(){
+                        viewModel.fetchProveedor()
+                    }
                 }
+                
             }
-            
         }
         .onAppear {
             print("Reload")

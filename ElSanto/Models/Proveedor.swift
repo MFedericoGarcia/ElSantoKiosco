@@ -19,7 +19,7 @@ class Proveedor {
     var id: UUID
     var name: String
     var boletaFacturacion: Boleta
-    var montos = [Facturas] ()
+    var montos = [Facturas]()
     var productos = [Producto]()
     var numeroContacto: String
     
@@ -32,8 +32,8 @@ class Proveedor {
         self.numeroContacto = numeroContacto
     }
     
-    func nuevaFactura(monto: Double, fecha: Date) {
-        montos.append(Facturas(monto: monto, fecha: fecha))
+    func nuevaFactura(monto: Double, fecha: Date, facturacion: Facturas.BlancoONegro) {
+        montos.append(Facturas(monto: monto, fecha: fecha, facturacion: facturacion))
         save()
     }
     
@@ -63,7 +63,7 @@ class Proveedor {
         }
     }
 #if DEBUG
-    static var ejemplo = Proveedor(name: "Osle", boletaFacturacion: .blanco, montos: [Facturas(monto: 200090.00, fecha: .now), Facturas(monto: 50000.00, fecha: .now)] )
+    static var ejemplo = Proveedor(name: "Osle", boletaFacturacion: .blanco, montos: [Facturas(monto: 200090.00, fecha: .now, facturacion: .blanco), Facturas(monto: 50000.00, fecha: .now, facturacion: .blanco)] )
 #endif
     
 }
