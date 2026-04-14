@@ -57,8 +57,9 @@ struct ProductosListView: View {
                         isShowingSheet = true
                     } label: {
                         AddButton()
-                            .font(.title)
                     }
+                    .buttonStyle(.borderedProminent)
+
                 }
                 
                 ToolbarItem(placement: .topBarLeading) {
@@ -67,9 +68,12 @@ struct ProductosListView: View {
                 } label: {
                     Image(systemName: "barcode.viewfinder")
                         .font(.title)
+                        .foregroundStyle(.white)
                 }
-                }
+                
                 .buttonStyle(.borderedProminent)
+                }
+                
 
             }
             .sheet(isPresented: $isShowingSheet) {

@@ -37,9 +37,9 @@ struct NuevoGastoView: View {
             }
             .padding()
             .font(.title3)
-                .tint(.teal.opacity(0.5))
-                .buttonStyle(.borderedProminent)
-                .foregroundStyle(.white)
+            .tint(.teal.opacity(0.5))
+            .buttonStyle(.borderedProminent)
+            .foregroundStyle(.white)
             Spacer()
         }
         .presentationDetents([.height(250)])

@@ -10,6 +10,7 @@ import SwiftUI
 struct AddButton: View {
     var body: some View {
         HStack {
+            Text("Nuevo")
             Image(systemName: "plus")
         }
         .foregroundStyle(.white)
