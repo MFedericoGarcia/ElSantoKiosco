@@ -75,7 +75,6 @@ struct ProveedoresView: View {
             }
         }
         .onAppear {
-            print("Reload")
             viewModel.modelContext = modelContext
             viewModel.fetchProveedor()
         }
