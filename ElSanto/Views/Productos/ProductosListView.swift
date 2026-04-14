@@ -70,6 +70,7 @@ struct ProductosListView: View {
                         .font(.title)
                         .foregroundStyle(.white)
                 }
+                .disabled(viewModel.productos.isEmpty)
                 
                 .buttonStyle(.borderedProminent)
                 }

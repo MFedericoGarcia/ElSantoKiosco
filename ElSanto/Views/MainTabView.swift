@@ -36,7 +36,6 @@ struct MainTabView: View {
                 .tint(.red.opacity(0.5))
         
         }
-        .foregroundStyle(.white)
         .preferredColorScheme(.dark)
     }
 }
