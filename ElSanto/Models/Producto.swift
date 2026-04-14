@@ -23,6 +23,7 @@ class Producto {
     var precioVenta: Double
     var tipoProducto: TipoProducto
     var porcentajeGanancia: Double
+    var codigoDeBarras: String = ""
 
     // Relationship to Proveedor (optional)
     var proveedores: Proveedor?
@@ -30,7 +31,7 @@ class Producto {
     
     
 
-    init(id: UUID = UUID(), nombre: String, precioCosto: Double, precioVenta: Double, tipoProducto: TipoProducto, proveedores: Proveedor? = nil) {
+    init(id: UUID = UUID(), nombre: String, precioCosto: Double, precioVenta: Double, tipoProducto: TipoProducto, codigoDeBarras: String = "", proveedores: Proveedor? = nil) {
         self.id = id
         self.nombre = nombre
         self.precioCosto = precioCosto
@@ -39,10 +40,12 @@ class Producto {
         self.proveedores = proveedores
         self.porcentajeGanancia = ((precioVenta - precioCosto) / precioCosto) * 100
         
+        self.codigoDeBarras = codigoDeBarras
+        
         self.preciosHistoricos.append(PreciosHistoricos(fecha: .now, precio: precioCosto))
     }
     
-    init(id: UUID = UUID(), nombre: String, precioCosto: Double, tipoProducto: TipoProducto, porcentajeGanancia: Double, proveedores: Proveedor? = nil) {
+    init(id: UUID = UUID(), nombre: String, precioCosto: Double, tipoProducto: TipoProducto, porcentajeGanancia: Double, codigoDeBarras: String = "", proveedores: Proveedor? = nil) {
         self.id = id
         self.nombre = nombre
         self.precioCosto = precioCosto
@@ -50,6 +53,8 @@ class Producto {
         self.tipoProducto = tipoProducto
         self.proveedores = proveedores
         self.porcentajeGanancia = porcentajeGanancia
+        
+        self.codigoDeBarras = codigoDeBarras
         
         self.preciosHistoricos.append(PreciosHistoricos(fecha: .now, precio: precioCosto))
     }
