@@ -18,8 +18,7 @@ extension ProductosListView {
         var productos: [Producto] = []
         
         var isShowingScan = false
-        // Callback que se ejecuta al completar un escaneo exitoso
-        var onScan: ((String) -> Void)?
+        var barcodeScaned: Producto?
         
         func fetchProductos() {
             let fetchDescriptor = FetchDescriptor<Producto>(sortBy: [SortDescriptor(\.nombre)])
@@ -57,10 +56,22 @@ extension ProductosListView {
                 let details = result.string
                 print(details)
                 isShowingScan = false
+                productScanned(code: details)
+                
             case .failure(let error):
                 print("Scanning failed: \(error.localizedDescription)")
             }
             
+        }
+        
+        func productScanned( code: String){
+            for producto in productos {
+                if producto.codigoDeBarras == code {
+                    barcodeScaned = producto
+                } else {
+                    barcodeScaned = Producto(nombre: "Nuevo", precioCosto: 0, precioVenta: 0, tipoProducto: .varios, codigoDeBarras: code)
+                }
+            }
         }
         
     }

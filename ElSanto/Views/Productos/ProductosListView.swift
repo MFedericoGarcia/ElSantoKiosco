@@ -17,7 +17,7 @@ struct ProductosListView: View {
     
     @State private var isShowingSheet = false
     @State private var searchText = ""
-
+    
     
     var body: some View {
         NavigationStack {
@@ -88,6 +88,9 @@ struct ProductosListView: View {
                                     completion: viewModel.handleScann)
                  
                 
+            }
+            .sheet(item: $viewModel.barcodeScaned) { code in
+                ProductoDetailView(producto: code)
             }
         }
         .onAppear {

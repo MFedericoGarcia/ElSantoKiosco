@@ -17,6 +17,7 @@ struct NuevoProductoView: View {
     @State private var porcentajeOPrecio = false
     
     @State private var viewModel = ViewModel()
+    
     var refresh: (() -> Void)
     
     var body: some View {
@@ -25,11 +26,12 @@ struct NuevoProductoView: View {
                 TextField("Nombre del Producto", text: $viewModel.nombre)
                 HStack {
                     Text("Código de barras : \(viewModel.codigoDeBarras)")
-                    Button {
-                        viewModel.isShowingScan = true
-                    } label: {
-                        Image(systemName: "barcode")
-                    }
+                        Button {
+                            viewModel.isShowingScan = true
+                        } label: {
+                            Image(systemName: "barcode")
+                        }
+                    
                 }
                 Picker("Tipo del Producto", selection: $viewModel.tipo) {
                     ForEach(Producto.TipoProducto.allCases, id: \.self){ tipo in
@@ -83,6 +85,7 @@ struct NuevoProductoView: View {
             
             .onAppear{
                 viewModel.modelContext = modelContext
+                    
             }
             
             Button("Agregar Producto") {
@@ -101,6 +104,7 @@ struct NuevoProductoView: View {
             
         }
         .scrollDismissesKeyboard(.immediately)
+        
 
         
     }
