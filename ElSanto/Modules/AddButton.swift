@@ -12,6 +12,7 @@ struct AddButton: View {
         HStack {
             Image(systemName: "plus")
         }
+        .foregroundStyle(.white)
     }
 }
 
