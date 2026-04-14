@@ -42,7 +42,7 @@ struct CierresZView: View {
                         .listRowBackground(Color.clear)
                         .scrollContentBackground(.hidden)
                     } else {
-                        ContentUnavailableView("Todavia no hay 'Z's ingresados", systemImage: "z.square.fill")
+                        ContentUnavailableView("Todavia no hay 'Z's ingresados", systemImage: "z.square")
                     }
                 }
             }
