@@ -10,51 +10,19 @@ import Foundation
 
 @Model
 class CierresZ {
+    
+    var numeroDeZ: Int
     var fecha: Date
     var cigarrillos: Double
     var varios: Double
     
-    init(fecha: Date, cigarrillos: Double, varios: Double) {
+    init(numeroDeZ: Int, fecha: Date, cigarrillos: Double, varios: Double) {
+        self.numeroDeZ = numeroDeZ
         self.fecha = fecha
         self.cigarrillos = cigarrillos
         self.varios = varios
     }
-    
-    static func totalMes(month: Int, year: Int, in context: ModelContext, calendar: Calendar = .current) -> String {
-        var comps = DateComponents()
-        comps.year = year
-        comps.month = month
-        comps.day = 1
-        guard let startOfMonth = calendar.date(from: comps),
-              let startOfNextMonth = calendar.date(byAdding: DateComponents(month: 1), to: startOfMonth) else {
-            return "0"
-        }
-
-        // Construir un descriptor de fetch con filtro por rango de fechas
-        var descriptor = FetchDescriptor<CierresZ>()
-        descriptor.predicate = #Predicate<CierresZ> { item in
-            item.fecha >= startOfMonth && item.fecha < startOfNextMonth
-        }
-
-        // Ejecutar el fetch y devolver el conteo
-        do {
-            let results = try context.fetch(descriptor)
-            
-            var totalVarios = 0.0
-            var totalCigarrillos = 0.0
-
-            for result in results {
-                totalVarios += result.varios
-                totalCigarrillos += result.cigarrillos
-            }
-            
-            return "en \(results.count) \n Cigarrillos : \(totalCigarrillos)\n Varios : \(totalVarios)"
-        } catch {
-            print("Error fetching CierresZ for month: ", error.localizedDescription)
-            return "0"
-        }
-    }
-    
+        
     // Datos de ejemplo para pruebas
     static var ejemplos: [CierresZ] {
         let cal = Calendar.current
@@ -67,11 +35,11 @@ class CierresZ {
         let f5 = cal.date(byAdding: .month, value: -2, to: now).flatMap { cal.date(byAdding: .day, value: 10, to: $0) } ?? now
 
         return [
-            CierresZ(fecha: f1, cigarrillos: 1200.0, varios: 800.0),
-            CierresZ(fecha: f2, cigarrillos: 900.0, varios: 450.0),
-            CierresZ(fecha: f3, cigarrillos: 1500.0, varios: 600.0),
-            CierresZ(fecha: f4, cigarrillos: 700.0, varios: 300.0),
-            CierresZ(fecha: f5, cigarrillos: 1100.0, varios: 500.0)
+            CierresZ(numeroDeZ: 25, fecha: f1, cigarrillos: 1200.0, varios: 800.0),
+            CierresZ(numeroDeZ: 19, fecha: f2, cigarrillos: 900.0, varios: 450.0),
+            CierresZ(numeroDeZ: 24, fecha: f3, cigarrillos: 1500.0, varios: 600.0),
+            CierresZ(numeroDeZ: 21, fecha: f4, cigarrillos: 700.0, varios: 300.0),
+            CierresZ(numeroDeZ: 22, fecha: f5, cigarrillos: 1100.0, varios: 500.0)
         ]
     }
 }

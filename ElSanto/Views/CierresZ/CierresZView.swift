@@ -9,13 +9,12 @@ import SwiftData
 import SwiftUI
 
 struct CierresZView: View {
+    @Environment(\.dismiss) var dismiss
     @Environment(\.modelContext) var modelContext
-    @Query(sort: \CierresZ.fecha) var cierresZ : [CierresZ]
+    @Query(sort: \CierresZ.fecha, order: .reverse) var cierresZ : [CierresZ]
     
     @State private var isShowingSheet = false
-    @State private var fecha: Date = .now
-    @State private var cigarrillos = 0.0
-    @State private var varios = 0.0
+    
     
     var body: some View {
         NavigationStack {
@@ -50,45 +49,32 @@ struct CierresZView: View {
             .navigationBarTitleDisplayMode(.inline)
 
             .toolbar {
-                Button {
-                    isShowingSheet = true
-                } label: {
-                    AddButton()
+                    ToolbarItem {
+                        Button {
+                            isShowingSheet = true
+                        } label: {
+                            AddButton()
+                        }
+                        .buttonStyle(.borderedProminent)
+                    }
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    NavigationLink {
+                        AgrupadosView()
+                    } label: {
+                        Text("Agrupados")
+                    }
                 }
-                .buttonStyle(.borderedProminent)
+            
 
             }
             .sheet(isPresented: $isShowingSheet) {
-                VStack {
-                    Text("Nuevo Z")
-                        .font(.title)
-                        .padding()
-                    
-                    List {
-                        Section("Varios"){
-                            TextField("Varios", value: $varios, format: .currency(code: "ARS"))
-                        }
-                        Section("Cigarrillos"){
-                            TextField("Cigarrillos", value: $cigarrillos, format: .currency(code: "ARS"))
-                        }
-                        DatePicker("Fecha", selection: $fecha, displayedComponents: .date)
-                        
-                    }
-                    Button("Agregar Z") {
-                        modelContext.insert(CierresZ(fecha: fecha, cigarrillos: cigarrillos, varios: varios))
-                    }
-                    .padding()
-                    .font(.title3)
-                    .tint(.orange.opacity(0.5))
-                    .buttonStyle(.borderedProminent)
-                    .foregroundStyle(.white)
-                }
-                .presentationDetents([.height(500)])
+                NuevoZ()
             }
         }
     }
 }
 
 #Preview {
-    CierresZView(/*cierresZ: CierresZ.ejemplos*/)
+    CierresZView()
 }

@@ -48,6 +48,30 @@ struct ProductosListView: View {
                         ContentUnavailableView("No hay Productos cargados", systemImage: "basket")
                     }
                 }
+                
+                // Botón flotante en bottom trailing
+                GeometryReader { proxy in
+                    let size = proxy.size
+                    Button {
+                        viewModel.isShowingScan = true
+                    } label: {
+                        HStack(spacing: 8) {
+                            Text("Buscar")
+                                .foregroundStyle(.white)
+                            Image(systemName: "barcode.viewfinder")
+                                .font(.title2)
+                                .foregroundStyle(.white)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 12)
+                        .background(Capsule().fill(Color.accentColor))
+                        .shadow(radius: 4, y: 2)
+                    }
+                    .disabled(viewModel.productos.isEmpty)
+                    .position(x: size.width - 16 - 60, y: size.height - 24 - 24)
+                    // Nota: 60 es aprox. medio ancho; ajusta según tu diseño o calcula dinámicamente
+                }
+                
             }
             .navigationTitle("Productos")
             .navigationBarTitleDisplayMode(.inline)
@@ -62,18 +86,6 @@ struct ProductosListView: View {
 
                 }
                 
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        viewModel.isShowingScan = true
-                } label: {
-                    Image(systemName: "barcode.viewfinder")
-                        .font(.title)
-                        .foregroundStyle(.white)
-                }
-                .disabled(viewModel.productos.isEmpty)
-                
-                .buttonStyle(.borderedProminent)
-                }
                 
 
             }
@@ -93,6 +105,9 @@ struct ProductosListView: View {
             .sheet(item: $viewModel.barcodeScaned) { code in
                 ProductoDetailView(producto: code)
             }
+            
+            
+            
         }
         .onAppear {
             viewModel.modelContext = modelContext
