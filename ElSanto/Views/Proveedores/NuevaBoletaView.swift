@@ -11,6 +11,9 @@ struct NuevaBoletaView: View {
     @Environment(\.dismiss) var dismiss
     @State private var viewModel: ViewModel
     
+    @State private var showingDatePicker = false
+
+    
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             
@@ -23,10 +26,39 @@ struct NuevaBoletaView: View {
                     TextField("Monto de la boleta", value: $viewModel.monto, format: .currency(code: "ARS").grouping(.automatic) )
                         .keyboardType(.decimalPad)
 
-                    DatePicker(selection: $viewModel.fecha, displayedComponents: .date) {
-                        Text("")
+                    Button {
+                        showingDatePicker = true
+                    } label: {
+                        Text(viewModel.fecha.formatted(date: .abbreviated, time: .omitted))
                     }
+                        
+                    
+                    
                 }
+                Picker("Tipo de Boleta", selection: $viewModel.facturacion) {
+                    Text("Blanco").tag("Blanco")
+                    Text("Cigarrillos").tag("Cigarrillos")
+                    Text("Presupuesto").tag("Negro")
+                }
+                .pickerStyle(.segmented)
+            }
+            .popover(isPresented: $showingDatePicker) {
+                VStack {
+                    DatePicker(
+                        "",
+                        selection: $viewModel.fecha,
+                        in: ...Date(),
+                        displayedComponents: .date
+                    )
+                    .labelsHidden()
+                    .datePickerStyle(.wheel) // opcional
+
+                    Button("Listo") {
+                        showingDatePicker = false // cierra SOLO este sheet
+                    }
+                    .padding(.top)
+                }
+                .presentationDetents([.height(300)])
             }
             Button("Agregar Boleta") {
                 dismiss()

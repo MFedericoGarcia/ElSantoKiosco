@@ -25,12 +25,7 @@ struct NuevoProveedorView: View {
             
             List {
                 TextField("Nombre del Proveedor", text: $viewModel.nombre)
-                Picker("Tipo de Boleta", selection: $viewModel.factura) {
-                    ForEach(Proveedor.Boleta.allCases, id: \.self){ tipo in
-                        Text(String(tipo.rawValue))
-                    }
-                }
-                .pickerStyle(.segmented)
+                
                 TextField("Número de contacto", text: $viewModel.contacto)
             }
             .onAppear {

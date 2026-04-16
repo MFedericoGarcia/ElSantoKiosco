@@ -12,7 +12,8 @@ struct EditPrecioView: View {
     
     @State private var viewModel: ViewModel
     @State private var showingAlert = false
-   
+    @State private var showingDatePicker = false
+
     
     var body: some View {
         VStack {
@@ -20,18 +21,48 @@ struct EditPrecioView: View {
                 TextField("Nuevo Precio", value: $viewModel.nuevoPrecio, format: .currency(code: "ARS").grouping(.automatic))
                     .font(.title)
                     .keyboardType(.decimalPad)
-                DatePicker("Fecha de Aumento", selection: $viewModel.fecha, displayedComponents: .date)
-                      .datePickerStyle(.compact)
-                      .font(.title3)
+                
+                
+                Button {
+                    showingDatePicker = true
+                } label: {
+                    HStack {
+                        Text("Fecha del aumento")
+                        Image(systemName: "calendar")
+                        Spacer()
+                        Text(viewModel.fecha.formatted(date: .abbreviated, time: .omitted))
+                    }
+                }
+                
             }
             .frame(maxWidth: .infinity, maxHeight: 150)
             .listStyle(.plain)
+            .popover(isPresented: $showingDatePicker) {
+                VStack {
+                    DatePicker(
+                        "",
+                        selection: $viewModel.fecha,
+                        in: ...Date(),
+                        displayedComponents: .date
+                    )
+                    .labelsHidden()
+                    .datePickerStyle(.wheel)
+
+                    Button("Listo") {
+                        showingDatePicker = false // cierra SOLO este sheet
+                    }
+                    .padding(.top)
+                }
+                .presentationDetents([.height(300)])
+            }
             
             Button {
                 showingAlert = true
             } label: {
                 GuadrarButton()
             }
+            
+            
             
         }
         .presentationDetents([.medium])

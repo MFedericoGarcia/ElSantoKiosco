@@ -14,21 +14,16 @@ class Facturas: Comparable {
     var id: UUID
     var monto: Double
     var fecha: Date
-    var facturacion: BlancoONegro
+    var facturacion: String
+    var proveedor: Proveedor?
     
-    enum BlancoONegro: String, Codable, CaseIterable {
-        case blanco = "Blanco"
-        case negro = "Negro"
-        case cigarrillos = "Cigarrillos"
-    }
-    
-    
-    init(id: UUID = UUID(), monto: Double, fecha: Date, facturacion: BlancoONegro) {
+    init(id: UUID = UUID(), monto: Double, fecha: Date, facturacion: String, proveedor: Proveedor? = nil) {
         
         self.id = id
         self.monto = monto
         self.fecha = fecha
         self.facturacion = facturacion
+        self.proveedor = proveedor
         
     }
     

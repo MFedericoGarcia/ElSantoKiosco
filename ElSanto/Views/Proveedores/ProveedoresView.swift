@@ -36,9 +36,6 @@ struct ProveedoresView: View {
                                             Text(proveedor.numeroContacto)
                                                 .font(.subheadline)
                                                 .foregroundStyle(.secondary)
-                                            Text("Boleta : \(proveedor.boletaFacturacion.rawValue)")
-                                                .font(.subheadline)
-                                                .foregroundStyle(.secondary)
                                         }
                                     }
                                 }
