@@ -60,6 +60,7 @@ struct NuevoZ: View {
             .buttonStyle(.borderedProminent)
             .foregroundStyle(.white)
         }
+        
         .presentationDetents([.height(550)])
     }
 }

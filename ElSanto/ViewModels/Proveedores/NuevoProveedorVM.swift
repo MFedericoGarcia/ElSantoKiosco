@@ -13,11 +13,10 @@ extension NuevoProveedorView {
     class ViewModel {
         var modelContext: ModelContext? = nil
         var nombre = ""
-        var factura = Proveedor.Boleta.blanco
         var contacto = ""
         
         func agregarProveedor() {
-            modelContext?.insert(Proveedor(name: nombre, boletaFacturacion: factura, numeroContacto: contacto))
+            modelContext?.insert(Proveedor(name: nombre, numeroContacto: contacto))
         }
     }
 }

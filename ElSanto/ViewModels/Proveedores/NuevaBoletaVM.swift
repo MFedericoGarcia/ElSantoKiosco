@@ -14,7 +14,7 @@ extension NuevaBoletaView {
         
         var monto: Double = 0.0
         var fecha: Date = .now
-        var facturacion: Facturas.BlancoONegro = .blanco
+        var facturacion: String = "Blanco"
         
         init(proveedor: Proveedor) {
             self.proveedor = proveedor

@@ -11,6 +11,7 @@ import SwiftUI
 struct AgrupadosView: View {
     @Environment(\.modelContext) var modelContext
     @Query() var cierresZ : [CierresZ]
+    @Query() var proveedores: [Facturas]
     
     private let meses = [
           "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -32,7 +33,7 @@ struct AgrupadosView: View {
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding()
                                     
-                                    Text(totalMes(month: month, year: 2026, in: modelContext))
+                                    Text(boletasTotalMes(month: month, year: 2026, in: modelContext))
                                         .font(.title3.bold())
                                         .foregroundStyle((month == mesCorriente ? .mint : .white))
                                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -56,10 +57,12 @@ struct AgrupadosView: View {
         comps.year = year
         comps.month = month
         comps.day = 1
+        
         guard let startOfMonth = calendar.date(from: comps),
               let startOfNextMonth = calendar.date(byAdding: DateComponents(month: 1), to: startOfMonth) else {
             return "0"
         }
+        
 
         // Construir un descriptor de fetch con filtro por rango de fechas
         var descriptor = FetchDescriptor<CierresZ>()
@@ -79,9 +82,59 @@ struct AgrupadosView: View {
                 totalCigarrillos += result.cigarrillos
             }
             
-            return "Cantidad de Z:  \(results.count) \nCigarrillos : \(totalCigarrillos)\nVarios : \(totalVarios)"
+            return "Total Facturado     -    Num Zs:  \(results.count) \nCigarrillos : \(totalCigarrillos.formatted(.currency(code: "ARS")))\nVarios : \(totalVarios.formatted(.currency(code: "ARS")))"
         } catch {
             print("Error fetching CierresZ for month: ", error.localizedDescription)
+            return "0"
+        }
+    }
+    
+    
+    func boletasTotalMes(month: Int, year: Int, in context: ModelContext, calendar: Calendar = .current) -> String {
+        var comps = DateComponents()
+        comps.year = year
+        comps.month = month
+        comps.day = 1
+        
+        guard let startOfMonth = calendar.date(from: comps),
+              let startOfNextMonth = calendar.date(byAdding: DateComponents(month: 1), to: startOfMonth) else {
+            return "0"
+        }
+
+        // Construir un descriptor de fetch con filtro por rango de fechas
+        var descriptor = FetchDescriptor<Facturas>()
+        descriptor.predicate = #Predicate<Facturas> { item in
+            item.fecha >= startOfMonth && item.fecha < startOfNextMonth
+        }
+
+        // Ejecutar el fetch y devolver el conteo/sumas
+        do {
+            let results = try context.fetch(descriptor)
+            
+            var totalVarios = 0.0       // .blanco
+            var totalCigarrillos = 0.0  // .cigarrillos
+            var totalNegro = 0.0        // .negro
+
+            for result in results {
+                let blancoNegro = result.facturacion
+                
+                if blancoNegro == "Blanco" {
+                    totalVarios += result.monto
+                } else if blancoNegro == "Cigarrillos" {
+                    totalCigarrillos += result.monto
+                } else {
+                    totalNegro += result.monto
+                }
+                
+            }
+            
+            return """
+            Cigarrillos: \(totalCigarrillos.formatted(.currency(code: "ARS")))
+            Varios: \(totalVarios.formatted(.currency(code: "ARS")))
+            Presupuestos: \(totalNegro.formatted(.currency(code: "ARS")))
+            """
+        } catch {
+            print("Error fetching Facturas for month: ", error.localizedDescription)
             return "0"
         }
     }
