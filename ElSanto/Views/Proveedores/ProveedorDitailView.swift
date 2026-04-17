@@ -31,6 +31,7 @@ struct ProveedorDitailView: View {
                     showSheet.toggle()
                 } label: {
                     AddButton()
+                        .tint(LinearGradient(stops: Gradient(colors: [Color.red.opacity(0.2), Color.blue.opacity(0.2)]).stops, startPoint: .topLeading, endPoint: .bottomTrailing))
                 }
             }
             

@@ -20,7 +20,7 @@ struct CierresZView: View {
         NavigationStack {
             
             ZStack{
-                Color.orange.opacity(0.2)
+                LinearGradient(colors: [Color.orange.opacity(0.5), Color.black], startPoint: .topLeading, endPoint: .bottomTrailing)
                     .ignoresSafeArea()
                 
                 VStack {
@@ -42,12 +42,13 @@ struct CierresZView: View {
                         .scrollContentBackground(.hidden)
                     } else {
                         ContentUnavailableView("Todavia no hay 'Z's ingresados", systemImage: "z.square")
+                            .foregroundStyle(AppGradient.primaryStyle)
+
                     }
                 }
             }
             .navigationTitle("Cierres Z")
             .navigationBarTitleDisplayMode(.inline)
-
             .toolbar {
                     ToolbarItem {
                         Button {

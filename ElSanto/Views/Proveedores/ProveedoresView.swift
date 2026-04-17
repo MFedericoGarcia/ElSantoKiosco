@@ -19,12 +19,15 @@ struct ProveedoresView: View {
     var body: some View {
         NavigationStack {
             ZStack{
-                Color.brown.opacity(0.2)
+                LinearGradient(colors: [Color.brown, Color.black], startPoint: .topLeading, endPoint: .bottomTrailing)
                     .ignoresSafeArea()
+                
                 VStack{
                     if searching == false && viewModel.proveedores.isEmpty && searchText.isEmpty{
                         
                         ContentUnavailableView("No hay Proveedores cargados", systemImage: "truck.box.badge.clock")
+                            .foregroundStyle(AppGradient.primaryStyle)
+
                         
                     } else {
                         List {
@@ -47,8 +50,8 @@ struct ProveedoresView: View {
                                 viewModel.deleteProveedor(at: index)
                             }
                             .onChange(of: searchText, { oldValue, newValue in
-                                    searching = true
-                                    viewModel.fetchProveedor(fetchByName: newValue)
+                                searching = true
+                                viewModel.fetchProveedor(fetchByName: newValue)
                                 
                             })
                         }

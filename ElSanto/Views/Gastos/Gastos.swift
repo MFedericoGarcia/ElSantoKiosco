@@ -25,7 +25,7 @@ struct Gastos: View {
         NavigationStack {
             
             ZStack{
-                Color.teal.opacity(0.2)
+                LinearGradient(colors: [Color.teal, Color.black], startPoint: .topLeading, endPoint: .bottomTrailing)
                     .ignoresSafeArea()
                 
                 VStack{
@@ -63,6 +63,8 @@ struct Gastos: View {
                         .scrollContentBackground(.hidden)
                     } else {
                         ContentUnavailableView("Todavia no ingresaste Gastos", systemImage: "text.page.badge.magnifyingglass")
+                            .foregroundStyle(AppGradient.primaryStyle)
+
                     }
                 }
             }

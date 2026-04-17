@@ -23,9 +23,9 @@ struct ProductosListView: View {
         NavigationStack {
             
             ZStack{
-                Color.indigo.opacity(0.2)
+                LinearGradient(colors: [Color.indigo, Color.black], startPoint: .topLeading, endPoint: .bottomTrailing)
                     .ignoresSafeArea()
-            
+                
                 VStack {
                     if !viewModel.productos.isEmpty {
                         List {
@@ -46,6 +46,7 @@ struct ProductosListView: View {
                         
                     } else {
                         ContentUnavailableView("No hay Productos cargados", systemImage: "basket")
+                            .foregroundStyle(AppGradient.primaryStyle)
                     }
                 }
                 
