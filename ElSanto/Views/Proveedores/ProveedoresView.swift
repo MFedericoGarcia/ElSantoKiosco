@@ -13,8 +13,8 @@ struct ProveedoresView: View {
     @State private var viewModel = ViewModel()
     
     @State private var showSheet = false
-    @State private var searchText = ""
-    
+    @State private var searchText: String = ""
+    @State private var searching = false
     
     var body: some View {
         NavigationStack {
@@ -22,10 +22,13 @@ struct ProveedoresView: View {
                 Color.brown.opacity(0.2)
                     .ignoresSafeArea()
                 VStack{
-                    if !viewModel.proveedores.isEmpty{
+                    if searching == false && viewModel.proveedores.isEmpty && searchText.isEmpty{
+                        
+                        ContentUnavailableView("No hay Proveedores cargados", systemImage: "truck.box.badge.clock")
+                        
+                    } else {
                         List {
-                            let filtrados = viewModel.filtrarProductos(searchText: searchText)
-                            ForEach(filtrados, id: \.id) { proveedor in
+                            ForEach(viewModel.proveedores, id: \.id) { proveedor in
                                 NavigationLink {
                                     ProveedorDitailView(proveedor: proveedor)
                                 } label: {
@@ -40,7 +43,14 @@ struct ProveedoresView: View {
                                     }
                                 }
                             }
-                            .onDelete(perform: viewModel.deleteProveedor)
+                            .onDelete { index in
+                                viewModel.deleteProveedor(at: index)
+                            }
+                            .onChange(of: searchText, { oldValue, newValue in
+                                    searching = true
+                                    viewModel.fetchProveedor(fetchByName: newValue)
+                                
+                            })
                         }
                         .padding(.horizontal, 10)
                         .listStyle(.automatic)
@@ -48,8 +58,6 @@ struct ProveedoresView: View {
                         .scrollContentBackground(.hidden)
                         .searchable(text: $searchText, prompt: "Buscar por nombre")
                         
-                    } else {
-                        ContentUnavailableView("No hay Proveedores cargados", systemImage: "truck.box.badge.clock")
                     }
                 }
                 .navigationTitle("Proveedores")
@@ -65,7 +73,12 @@ struct ProveedoresView: View {
 
                 }
                 .sheet(isPresented: $showSheet) {
+                    
                     NuevoProveedorView(){
+                        viewModel.fetchProveedor()
+                    }
+                    .task {
+                        viewModel.modelContext = modelContext
                         viewModel.fetchProveedor()
                     }
                 }
@@ -75,6 +88,7 @@ struct ProveedoresView: View {
         .onAppear {
             viewModel.modelContext = modelContext
             viewModel.fetchProveedor()
+            searching = false
         }
     }
 }

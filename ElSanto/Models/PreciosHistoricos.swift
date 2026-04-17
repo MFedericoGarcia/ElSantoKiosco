@@ -9,7 +9,8 @@ import SwiftData
 import Foundation
 
 @Model
-class PreciosHistoricos: Comparable {
+class PreciosHistoricos:Identifiable, Comparable, Equatable {
+    var id = UUID()
     var fecha: Date
     var precio: Double
     
