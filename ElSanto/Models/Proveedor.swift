@@ -13,7 +13,7 @@ class Proveedor {
     
     var id: UUID
     var name: String
-    var montos = [Facturas]()
+    @Relationship(deleteRule: .cascade) var montos = [Facturas]()
     var productos = [Producto]()
     var numeroContacto: String
     

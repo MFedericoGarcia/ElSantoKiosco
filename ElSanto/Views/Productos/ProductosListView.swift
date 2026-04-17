@@ -93,6 +93,10 @@ struct ProductosListView: View {
                 NuevoProductoView(){
                     viewModel.fetchProductos()
                 }
+                .task {
+                    viewModel.modelContext = modelContext
+                    viewModel.fetchProductos()
+                }
             }
             .sheet(isPresented: $viewModel.isShowingScan) {
                     CodeScannerView(

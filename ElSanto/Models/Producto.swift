@@ -27,7 +27,7 @@ class Producto {
 
     // Relationship to Proveedor (optional)
     var proveedores: Proveedor?
-    var preciosHistoricos = [PreciosHistoricos]()
+    @Relationship(deleteRule: .cascade) var preciosHistoricos = [PreciosHistoricos]()
     
     
 

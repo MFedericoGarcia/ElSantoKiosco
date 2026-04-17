@@ -16,8 +16,15 @@ extension ProveedoresView {
         var proveedores: [Proveedor] = []
         var isEmpty = false
         
-        func fetchProveedor() {
-            let fetchDescriptor = FetchDescriptor<Proveedor>(sortBy: [SortDescriptor(\.name)])
+        func fetchProveedor(fetchByName: String = "") {
+            
+            var fetchDescriptor = FetchDescriptor<Proveedor>(sortBy: [SortDescriptor(\.name)])
+            
+            if !fetchByName.isEmpty {
+                fetchDescriptor.predicate = #Predicate<Proveedor>{ producto in
+                    producto.name.localizedStandardContains(fetchByName)
+                }
+            }
             
             proveedores = (try? (modelContext?.fetch(fetchDescriptor) ?? [])) ?? []
             proveedores.isEmpty ? (isEmpty = true) : (isEmpty = false)

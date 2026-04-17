@@ -17,6 +17,7 @@ struct ProductoDetailView: View {
     @State private var isExporting = false
     @State private var isShowingPercent = false
     @State private var nuevoPorcentaje = 0.0
+    @State private var showChart = false
     
     
     var body: some View {
@@ -72,35 +73,52 @@ struct ProductoDetailView: View {
                 }
                 
                 Section("Precios anteriores") {
-                    ForEach(viewModel.producto.preciosHistoricos.sorted(by: { lh, rh in
-                        lh < rh
-                    })) { historico in
-                        HStack {
-                            Text(String(historico.precio))
-                            Spacer()
-                            Text(historico.fechaString)
+                    if showChart {
+                        ChartPreciosView(producto: viewModel.producto)
+                    } else {
+                        ForEach(viewModel.producto.preciosHistoricos.sorted(by: { lh, rh in
+                            lh < rh
+                        })) { historico in
+                            HStack {
+                                Text(String(historico.precio))
+                                Spacer()
+                                Text(historico.fechaString)
+                            }
                         }
                     }
                 }
             }
             .toolbar {
-                Button("Export .txt") {
-                    viewModel.listToStrings()
-                    isExporting.toggle()
-                }
-                .fileExporter(
-                    isPresented: $isExporting,
-                    document: TextFile(initialLines: viewModel.listaDePrecios),
-                    contentType: .plainText,
-                    defaultFilename: viewModel.producto.nombre
-                ) { result in
-                    switch result {
-                    case .success(let url):
-                        print("Archivo exportado en: \(url)")
-                    case .failure(let error):
-                        print("Error al exportar: \(error.localizedDescription)")
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Export .txt") {
+                        viewModel.listToStrings()
+                        isExporting.toggle()
+                    }
+                    .fileExporter(
+                        isPresented: $isExporting,
+                        document: TextFile(initialLines: viewModel.listaDePrecios),
+                        contentType: .plainText,
+                        defaultFilename: viewModel.producto.nombre
+                    ) { result in
+                        switch result {
+                        case .success(let url):
+                            print("Archivo exportado en: \(url)")
+                        case .failure(let error):
+                            print("Error al exportar: \(error.localizedDescription)")
+                        }
                     }
                 }
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showChart.toggle()
+                    } label: {
+                        Text( showChart ? "Lista" : "Gráfico")
+                        Image(systemName: showChart ? "list.bullet.rectangle.portrait" : "chart.bar" )
+                    }
+                }
+                
+                
             }
         }
         .sheet(isPresented: $isShowingSheet) {
