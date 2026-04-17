@@ -40,7 +40,7 @@ struct NuevoProveedorView: View {
             }
             .padding()
             .font(.title3)
-            .tint(.brown.opacity(0.5))
+            .tint(LinearGradient(stops: Gradient(colors: [Color.red.opacity(0.2), Color.blue.opacity(0.2)]).stops, startPoint: .leading, endPoint: .trailing))
             .buttonStyle(.borderedProminent)
             .foregroundStyle(.white)
         }
