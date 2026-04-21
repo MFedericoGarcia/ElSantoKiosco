@@ -104,11 +104,11 @@ struct ProductosListView: View {
                                     codeTypes: [.gs1DataBar, .code39, .codabar, .code128, .code39Mod43, .code93, .ean13, .ean8, .gs1DataBarExpanded, .gs1DataBarLimited],
                                     scanMode: .once,
                                     completion: viewModel.handleScann)
-                 
-                
             }
             .sheet(item: $viewModel.barcodeScaned) { code in
-                ProductoDetailView(producto: code)
+                NavigationStack {
+                    ProductoDetailView(producto: code)
+                }
             }
             
             
